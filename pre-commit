@@ -9,7 +9,7 @@ ROOT="$(git rev-parse --show-toplevel)"
 source "$HOOKS_DIR/common.sh"
 
 case "$(basename "$ROOT")" in
-    finances) source "$HOOKS_DIR/hledger.sh" ;;
+    finances) source "$HOOKS_DIR/projects/hledger.sh" ;;
 esac
 
 exit 0

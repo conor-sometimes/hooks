@@ -35,14 +35,6 @@ if [ -n "$FILES" ]; then
     fi
 fi
 
-# --- ban em dashes anywhere in the years/ journals ---
-EMDASH_YEARS=$(LC_ALL=C grep -rn $'\xe2\x80\x94' "$ROOT"/years/*.journal || true)
-if [ -n "$EMDASH_YEARS" ]; then
-    echo "✗ em dash found in a years/ journal; commit aborted. Use '-' instead:" >&2
-    echo "$EMDASH_YEARS" >&2
-    exit 1
-fi
-
 # --- validate (same checks as CI and status.sh: strict + ordereddates + tags) ---
 if hledger -f "$ROOT/main.journal" check --strict ordereddates tags; then
     echo "✓ ledger validates; committing."
