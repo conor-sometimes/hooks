@@ -1,0 +1,14 @@
+#!/usr/bin/env bash
+# Generic commit-msg guard: no AI attribution, no em dashes in the message.
+set -euo pipefail
+MSG_FILE="$1"
+
+if grep -qiE '^[[:space:]]*Co-Authored-By:|Generated with.*(Claude|Copilot|ChatGPT|AI)' "$MSG_FILE"; then
+    echo "✗ AI/co-author attribution in commit message; commit aborted." >&2
+    exit 1
+fi
+
+if LC_ALL=C grep -q $'\xe2\x80\x94' "$MSG_FILE"; then
+    echo "✗ em dash in commit message; commit aborted. Use '-' instead." >&2
+    exit 1
+fi
