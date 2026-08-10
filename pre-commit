@@ -1,11 +1,15 @@
 #!/usr/bin/env bash
-# Generic pre-commit guard: no em dashes in newly added lines, any repo.
+# Dispatcher: common checks for every repo, then repo-specific logic.
+# Sourced scripts get $ROOT (repo root) and $HOOKS_DIR.
 set -euo pipefail
 
-EMDASH=$(git diff --cached --unified=0 | grep '^+' | grep -v '^+++' \
-         | LC_ALL=C grep -n $'\xe2\x80\x94' || true)
-if [ -n "$EMDASH" ]; then
-    echo "✗ em dash in newly added lines; commit aborted. Use '-' instead:" >&2
-    echo "$EMDASH" >&2
-    exit 1
-fi
+HOOKS_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+ROOT="$(git rev-parse --show-toplevel)"
+
+source "$HOOKS_DIR/common.sh"
+
+case "$(basename "$ROOT")" in
+    finances) source "$HOOKS_DIR/hledger.sh" ;;
+esac
+
+exit 0
