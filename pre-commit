@@ -8,8 +8,10 @@ ROOT="$(git rev-parse --show-toplevel)"
 
 source "$HOOKS_DIR/common.sh"
 
-case "$(basename "$ROOT")" in
-    finances) source "$HOOKS_DIR/projects/hledger.sh" ;;
+# Dispatch on the remote URL, not the directory name - a clone under another
+# name (finances2, a worktree, ~/money) must still get its checks.
+case "$(git remote get-url origin 2>/dev/null || true)" in
+    *conor-sometimes/finances*) source "$HOOKS_DIR/projects/hledger.sh" ;;
 esac
 
 exit 0
