@@ -9,7 +9,12 @@ ROOT="$(git rev-parse --show-toplevel)"
 source "$HOOKS_DIR/common.sh"
 
 case "$(basename "$ROOT")" in
-    finances) source "$HOOKS_DIR/projects/hledger.sh" ;;
+    anki-card-creator)      source "$HOOKS_DIR/projects/anki-card-creator.sh" ;;
+    anki-chrome-extension)  source "$HOOKS_DIR/projects/anki-chrome-extension.sh" ;;
+    finances)               source "$HOOKS_DIR/projects/hledger.sh" ;;
+    hledger-graphs)         source "$HOOKS_DIR/projects/hledger-graphs.sh" ;;
+    pth)                    source "$HOOKS_DIR/projects/pth.sh" ;;
+    routines)               source "$HOOKS_DIR/projects/routines.sh" ;;
 esac
 
 exit 0

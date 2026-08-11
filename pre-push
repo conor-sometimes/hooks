@@ -1,0 +1,14 @@
+#!/usr/bin/env bash
+# Dispatcher: repo-specific pre-push logic only (no universal push-time
+# checks yet). Sourced scripts get $ROOT (repo root) and $HOOKS_DIR.
+set -euo pipefail
+
+HOOKS_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+ROOT="$(git rev-parse --show-toplevel)"
+
+case "$(basename "$ROOT")" in
+    hledger-graphs) source "$HOOKS_DIR/projects/hledger-graphs-push.sh" ;;
+    pth)            source "$HOOKS_DIR/projects/pth-push.sh" ;;
+esac
+
+exit 0
