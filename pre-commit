@@ -8,13 +8,15 @@ ROOT="$(git rev-parse --show-toplevel)"
 
 source "$HOOKS_DIR/common.sh"
 
-case "$(basename "$ROOT")" in
-    anki-card-creator)      source "$HOOKS_DIR/projects/anki-card-creator.sh" ;;
-    anki-chrome-extension)  source "$HOOKS_DIR/projects/anki-chrome-extension.sh" ;;
-    finances)               source "$HOOKS_DIR/projects/hledger.sh" ;;
-    hledger-graphs)         source "$HOOKS_DIR/projects/hledger-graphs.sh" ;;
-    pth)                    source "$HOOKS_DIR/projects/pth.sh" ;;
-    routines)               source "$HOOKS_DIR/projects/routines.sh" ;;
+# Dispatch on the remote URL, not the directory name - a clone under another
+# name (finances2, a worktree, ~/money) must still get its checks.
+case "$(git remote get-url origin 2>/dev/null || true)" in
+    *conor-sometimes/anki-card-creator*)     source "$HOOKS_DIR/projects/anki-card-creator.sh" ;;
+    *conor-sometimes/anki-chrome-extension*) source "$HOOKS_DIR/projects/anki-chrome-extension.sh" ;;
+    *conor-sometimes/finances*)              source "$HOOKS_DIR/projects/hledger.sh" ;;
+    *conor-sometimes/hledger-graphs*)        source "$HOOKS_DIR/projects/hledger-graphs.sh" ;;
+    *conor-sometimes/pth*)                   source "$HOOKS_DIR/projects/pth.sh" ;;
+    *conor-sometimes/routines*)              source "$HOOKS_DIR/projects/routines.sh" ;;
 esac
 
 exit 0
